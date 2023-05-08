@@ -16,27 +16,31 @@
     <nav class="megamenu navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../src/view/index.ejs"><img src="images/logos/logo.png" alt="image"></a>
+                <a class="navbar-brand" href="/"><img src="images/logos/logo.png" alt="image"></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="../src/view/index.ejs">Home</a></li>
                     <li><a href="about.html">About us </a></li>
                     <li><a href="service.html">Service</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
-                    <li><a class="active" href="properties.html">Properties</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#" onclick="onloadHouseDetails()">Gallery</a></li>
+                    <li><a class="active" href="#" onclick="onloadHouses()">Houses</a></li>
+                    <li><a href="#" onclick="onloadHouseCreate()">Host</a></li>
+                    <li><a href="#" onclick="onloadLogin()">Login</a></li>
                     <li class="social-links"><a href="#"><i class="fa fa-twitter global-radius"></i></a></li>
                     <li class="social-links"><a href="#"><i class="fa fa-facebook global-radius"></i></a></li>
                     <li class="social-links"><a href="#"><i class="fa fa-linkedin global-radius"></i></a></li>
                     <li class="search-option">
-                        <button class="search tran3s dropdown-toggle" id="searchDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        <button class="search tran3s dropdown-toggle" id="searchDropdown" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"><i class="fa fa-search"
+                                                                              aria-hidden="true"></i></button>
                         <form action="#" class="p-color-bg dropdown-menu tran3s" aria-labelledby="searchDropdown">
                             <input type="text" placeholder="Search....">
                             <button class="p-color-bg"><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -48,250 +52,16 @@
     </nav>
 </header>
 
-<div class="all-title-box">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Properties</h2>
-                <!-- Breadcrumbs -->
-                <nav id="breadcrumbs">
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li>Properties</li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
+<div id="page-content">
+
 </div>
-<nav class="megamenu navbar navbar-default" style=" padding: 20px;right: -10px">
-    <div class="row">
-        <div class="form-inline">
-            <div style="right: -20px; display: inline-block">
-                <form style="display: inline-block">
-                    <label for="city">City:</label>
-                    <select id="city" name="city">
-                        <option value="">--Choice city--</option>
-                        <option value="Hanoi">Hà Nội</option>
-                        <option value="Saigon">Hồ Chí Minh</option>
-                    </select>
+<div id="notification">
 
-                    <label for="district">District:</label>
-                    <select id="district" name="district">
-                        <option value="">--Choice district--</option>
-                        <option value="BaDinh">Ba Đình</option>
-                        <option value="HoanKiem">Hoàn Kiếm</option>
-                        <!--Thêm các quận khác-->
-                    </select>
-
-                    <label for="ward">ward:</label>
-                    <select id="ward" name="ward">
-                        <option value="">--Choi ward--</option>
-                        <option value="XuanLa">Xuân La</option>
-                        <option value="TrucBach">Trúc Bạch</option>
-                        <!--Thêm các phường khác-->
-                    </select>
-
-                    <button type="submit">Tìm kiếm</button>
-                </form>
-            </div>
-            <div>
-                <input type="text" class="form-control" placeholder="Search for...">
-                <input type="text" class="form-control" placeholder="Search for...">
-                <button class="btn btn-default" type="button">Search by price</button>
-            </div>
-
-        </div><!-- /.col-lg-2 -->
-    </div><!-- /.row -->
-</nav>
-
-<div id="features" class="section wb">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <div class="service-widget">
-                    <div class="property-main">
-                        <div class="property-wrap">
-                            <figure class="post-media wow fadeIn">
-                                <a href="uploads/estate_01.jpg" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
-                                <img src="uploads/estate_01.jpg" alt="" class="img-responsive">
-                                <div class="label-inner">
-                                    <span class="label-status label">Popular</span>
-                                </div>
-                                <div class="price">
-                                    <span class="item-sub-price">$5.550/sq ft</span>
-                                </div>
-                            </figure>
-                            <div class="item-body">
-                                <h3>Spacious and Large Garden</h3>
-                                <div class="info">
-                                    <p><span>Bedroom: 4</span> <span>Bathroom: 2</span> <span>Land Size: <span class="estate-x-size">5000</span> <span class="estate-x-unit">square</span></span> <span>Building Size: <span class="estate-x-size">2400</span> <span class="estate-x-unit">square</span></span> </p>
-                                    <p>House</p>
-                                </div>
-                                <div class="adderess">
-                                    <i class="fa fa-map-pin" aria-hidden="true"></i>
-                                    334, Rock Hill, New York, Mississippi, 12775, USA
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item-foot">
-                            <div class="pull-left">
-								<span class="prop-user-agent">
-									<i class="fa fa-user" aria-hidden="true"></i>
-									john S.Allen
-								</span>
-                            </div>
-                            <div class="pull-right">
-								<span class="prop-date">
-									<i class="fa fa-calendar" aria-hidden="true"></i>
-									9 months ago
-								</span>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- end service -->
-            </div>
-
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <div class="service-widget">
-                    <div class="property-main">
-                        <div class="property-wrap">
-                            <figure class="post-media wow fadeIn">
-                                <a href="uploads/estate_01.jpg" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
-                                <img src="uploads/estate_01.jpg" alt="" class="img-responsive">
-                                <div class="label-inner">
-                                    <span class="label-status label">Popular</span>
-                                </div>
-                                <div class="price">
-                                    <span class="item-sub-price">$5.550/sq ft</span>
-                                </div>
-                            </figure>
-                            <div class="item-body">
-                                <h3>Spacious and Large Garden</h3>
-                                <div class="info">
-                                    <p><span>Bedroom: 4</span> <span>Bathroom: 2</span> <span>Land Size: <span class="estate-x-size">5000</span> <span class="estate-x-unit">square</span></span> <span>Building Size: <span class="estate-x-size">2400</span> <span class="estate-x-unit">square</span></span> </p>
-                                    <p>House</p>
-                                </div>
-                                <div class="adderess">
-                                    <i class="fa fa-map-pin" aria-hidden="true"></i>
-                                    334, Rock Hill, New York, Mississippi, 12775, USA
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item-foot">
-                            <div class="pull-left">
-								<span class="prop-user-agent">
-									<i class="fa fa-user" aria-hidden="true"></i>
-									john S.Allen
-								</span>
-                            </div>
-                            <div class="pull-right">
-								<span class="prop-date">
-									<i class="fa fa-calendar" aria-hidden="true"></i>
-									9 months ago
-								</span>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- end service -->
-            </div>
-
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <div class="service-widget">
-                    <div class="property-main">
-                        <div class="property-wrap">
-                            <figure class="post-media wow fadeIn">
-                                <a href="uploads/estate_03.jpg" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
-                                <img src="uploads/estate_03.jpg" alt="" class="img-responsive">
-                                <div class="label-inner">
-                                    <span class="label-status label">Popular</span>
-                                </div>
-                                <div class="price">
-                                    <span class="item-sub-price">$5.550/sq ft</span>
-                                </div>
-                            </figure>
-                            <div class="item-body">
-                                <h3>With its Own Pool</h3>
-                                <div class="info">
-                                    <p><span>Bedroom: 2</span> <span>Bathroom: 2</span> <span>Land Size: <span class="estate-x-size">3000</span> <span class="estate-x-unit">square</span></span> <span>Building Size: <span class="estate-x-size">1400</span> <span class="estate-x-unit">square</span></span> </p>
-                                    <p>House</p>
-                                </div>
-                                <div class="adderess">
-                                    <i class="fa fa-map-pin" aria-hidden="true"></i>
-                                    804, Rock Hill, New York, Mississippi, 12785, USA
-                                </div>
-                            </div>
-                            <div class="item-foot">
-                                <div class="pull-left">
-									<span class="prop-user-agent">
-										<i class="fa fa-user" aria-hidden="true"></i>
-										john S.Allen
-									</span>
-                                </div>
-                                <div class="pull-right">
-									<span class="prop-date">
-										<i class="fa fa-calendar" aria-hidden="true"></i>
-										9 months ago
-									</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- end service -->
-            </div>
-
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <div class="service-widget">
-                    <div class="property-main">
-                        <div class="property-wrap">
-                            <figure class="post-media wow fadeIn">
-                                <a href="uploads/estate_02.jpg" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
-                                <img src="uploads/estate_02.jpg" alt="" class="img-responsive">
-                                <div class="label-inner">
-                                    <span class="label-status label">Popular</span>
-                                </div>
-                                <div class="price">
-                                    <span class="item-sub-price">$5.550/sq ft</span>
-                                </div>
-                            </figure>
-                            <div class="item-body">
-                                <h3>In Forests- Fresh Clean Air</h3>
-                                <div class="info">
-                                    <p><span>Bedroom: 3</span> <span>Bathroom: 2</span> <span>Land Size: <span class="estate-x-size">4000</span> <span class="estate-x-unit">square</span></span> <span>Building Size: <span class="estate-x-size">2000</span> <span class="estate-x-unit">square</span></span> </p>
-                                    <p>House</p>
-                                </div>
-                                <div class="adderess">
-                                    <i class="fa fa-map-pin" aria-hidden="true"></i>
-                                    904, Rock Hill, New York, Mississippi, 12705, USA
-                                </div>
-                            </div>
-                            <div class="item-foot">
-                                <div class="pull-left">
-									<span class="prop-user-agent">
-										<i class="fa fa-user" aria-hidden="true"></i>
-										john S.Allen
-									</span>
-                                </div>
-                                <div class="pull-right">
-									<span class="prop-date">
-										<i class="fa fa-calendar" aria-hidden="true"></i>
-										9 months ago
-									</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- end service -->
-            </div>
-        </div><!-- end row -->
-    </div><!-- end container -->
-</div><!-- end section -->
-
-
+</div>
 
 <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
 
-<%- include('./partial/javascript')%>
+<%- include('./partial/javascript') %>
 
 </body>
 </html>

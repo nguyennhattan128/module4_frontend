@@ -1,5 +1,7 @@
 import express from 'express';
 const app = express();
+const hostname = '127.0.0.1';
+const port = 3000;
 
 app.set('views', './src/view');
 app.set('view engine', 'ejs');
@@ -16,6 +18,6 @@ app.get('/register',(req, res, next)=>{
     res.render('user/register.ejs')
 })
 
-app.listen(3000, () => {
-    console.log('Server is running')
-})
+app.listen(port, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+});

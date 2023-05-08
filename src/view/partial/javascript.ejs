@@ -1,21 +1,174 @@
-
 <!-- ALL JS FILES -->
 <script src="/js/all.js"></script>
+<script src="/js/case/main.js"></script>
+<script src="/js/case/cookies.js"></script>
+<script src="/js/case/script-loading.js"></script>
 <!-- ALL PLUGINS -->
 <script src="/js/custom.js"></script>
-<script src="/js/portfolio.js"></script>
-<script src="/js/hoverdir.js"></script>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
-<!-- MAP & CONTACT -->
-<script src="/js/map.js"></script>
 
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import {initializeApp} from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDxG2vMNkqz1sf4UGAaMzcaq3lVdAN5C8M",
+        authDomain: "users-8f542.firebaseapp.com",
+        projectId: "users-8f542",
+        storageBucket: "users-8f542.appspot.com",
+        messagingSenderId: "351740883393",
+        appId: "1:351740883393:web:b9c6a3bba9f040cf3ebf40",
+        measurementId: "G-KN5Q9HHHL7"
+    };
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+</script>
+<script type="module">
+    import {
+        getStorage,
+        ref,
+        uploadBytesResumable,
+        getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-storage.js";
+
+    const storage = getStorage();
+
+    // Create the file metadata
+    /** @type {any} */
+    const metadata = {
+        contentType: 'audio/mp3'
+    };
+
+
+    function uploadImage(e) {
+        document.getElementById("image-upload").disabled = true
+        // let uploader = document.getElementById('uploader');
+        let file = e.target.files[0];
+
+        // Upload file and metadata to the object 'images/mountains.jpg'
+        const storageRef = ref(storage, 'audios/' + file.name);
+        const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+        document.getElementById("upload-progress").hidden = false;
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                let progressBar = document.getElementById("upload-progress");
+                progressBar.style.width = Math.round(progress) + "%";
+                progressBar.innerHTML = Math.round(progress) + "%";
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            (error) => {
+                // A full list of error codes is available at
+                // https://firebase.google.com/docs/storage/web/handle-errors
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        // User doesn't have permission to access the object
+                        break;
+                    case 'storage/canceled':
+                        // User canceled the upload
+                        break;
+
+                    // ...
+
+                    case 'storage/unknown':
+                        // Unknown error occurred, inspect error.serverResponse
+                        break;
+                }
+            },
+            () => {
+                // Upload completed successfully, now we can get the download URL
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+                    // alert("Upload complete");
+
+                    //                 document.getElementById("notification").innerHTML = `
+                    //                     <div class="alert alert-success alert-dismissible fade show notification" role="alert" id="success-register"
+                    //      hidden="">
+                    //     <i class="fa fa-exclamation-circle me-2"></i>Upload successfully!
+                    //     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    // </div>
+                    //                 `;
+                    //                 document.getElementById("success-register").removeAttribute("hidden");
+                    //                 $('#success-register').alert();
+
+                    let urlList = document.getElementById("image-url-list").value;
+                    urlList = JSON.parse(urlList);
+                    urlList.push(downloadURL);
+                    document.getElementById("image-url-list").value = JSON.stringify(urlList);
+                    console.log(document.getElementById("image-url-list").value)
+
+                    let imageShowDiv = `
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="image-${urlList.length - 1}"
+                    style="border: 1px solid lightgray; border-radius: 5px; background-color: white">
+                        <div class="col-lg-8" style="height: 220px; position: relative;">
+
+                          <img src="${downloadURL}"  alt="" class="" style="position: absolute;
+                                  top: 50%;
+                                  -ms-transform: translateY(-50%);
+                                  transform: translateY(-50%);
+                                  width: 250px;
+                                    height: 200px;
+                                    object-fit: cover;
+">
+
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-2" style="height: 200px; position: relative">
+                                <button class="btn btn-danger " type="button" value="${urlList.length - 1}" onclick="removeImage(this.value)"
+                                    style="position: absolute;
+                                      top: 50%;
+                                      -ms-transform: translateY(-50%);
+                                      transform: translateY(-50%);">Remove</button>
+
+                      </div>
+                    </div>
+                    `
+                    document.getElementById("image-box").innerHTML += imageShowDiv
+
+                    setTimeout(() => {
+                        document.getElementById("image-upload").disabled = false;
+                    }, 500)
+
+                });
+            }
+        );
+    }
+
+    window.uploadImage = uploadImage;
+</script>
 
 <script src="/js/case/entity/address.js"></script>
 <script src="/js/case/entity/Status.js"></script>
 <script src="/js/case/entity/user.js"></script>
 <script src="/js/case/entity/house.js"></script>
+<script src="/js/case/house-create.js"></script>
+<script src="/js/case/houses.js"></script>
+<script src="/js/case/house-details.js"></script>
+<script src="/js/case/login.js"></script>
+<script src="/js/case/register.js"></script>
+
+
+
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        onloadHouses();
+    }, false);
+
     console.log(houseList);
     console.log("lay quan thanh pho HN id 1:", getQuan(1))
     console.log("lay cac phuong cua quan id 1", getPhuong(1));
