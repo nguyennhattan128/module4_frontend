@@ -1,12 +1,12 @@
-async function onloadLogin() {
+async function onloadRegister() {
 
-    await addHTMLLogin();
-    elementBindingLogin();
+    await addHTMLRegister();
+    elementBindingRegister();
     await fetchCity();
-    addEventLogin();
+    addEventRegister();
 }
 
-async function addHTMLLogin() {
+async function addHTMLRegister() {
     // console.log(`URL changed to ${window.location.pathname}`);
     let html = `
 <ul class='slideshow'>
@@ -29,19 +29,34 @@ async function addHTMLLogin() {
         <div class="row">
             <div class="col-md-6 wow slideInLeft hidden-xs hidden-sm">
                 <div class="contact_form">
-                    <h3><i class="fa fa-envelope-o grd1 global-radius"></i> Sign in </h3>
-                    <form id="contactform1" class="row" name="contactform" method="post">
+                    <h3><i class="fa fa-envelope-o grd1 global-radius"></i> Create account </h3>
+                    <form id="register-form" class="row">
                         <fieldset class="row-fluid">
-                            <div >
-                                <input type="text" name="first_name1" id="first_name1" class="form-control" placeholder="Username">
+                            <div>
+                                <input type="text" name="name" id="full-name" class="form-control" placeholder="Full Name">
                             </div>
-
-                            <div >
-                                <input type="text" name="last_name1" id="last_name1" class="form-control" placeholder="Password">
+                            <div>
+                                <input type="text" name="phoneNumber" id="phone-number" class="form-control" placeholder="Phone Number">
                             </div>
-
+                            <div>
+                                <input type="text" name="address" id="address" class="form-control" placeholder="Address">
+                            </div>
+                            <div>
+                                <input type="text" name="username" id="username" class="form-control" placeholder="Username to login">
+                            </div>
+                            <div >
+                                <input type="text" name="password" id="password" class="form-control" placeholder="Password">
+                            </div>                            
+                            <div>
+                                <label class="sr-only">Select role</label>
+                                <select name="role" id="select_service1" class="form-control" data-style="btn-white">
+                                    <option>Choice role</option>
+                                    <option value="1">Client</option>
+                                    <option value="2">Landlord</option>
+                                </select>
+                            </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
-                                <button type="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">Login</button>
+                                <button type="button" id="submit1" class="btn btn-light btn-radius btn-brd grd1 btn-block" onclick="submitRegisterForm()">Register</button>
                             </div>
                         </fieldset>
                     </form>
@@ -51,7 +66,6 @@ async function addHTMLLogin() {
                 <div class="big-tagline clearfix">
                     <h2>Rent a house with CITY Real Estate</h2>
                     <p class="lead">Hello, if you don't have an account, please register for a new account </p>
-                    <a data-scroll href="/register" class="btn btn-light btn-radius grd1 btn-brd">Register</a>
                 </div>
             </div>
         </div><!-- end row -->
@@ -63,20 +77,20 @@ async function addHTMLLogin() {
 }
 
 
-function elementBindingLogin() {
+function elementBindingRegister() {
 }
 
-function addEventLogin() {
+function addEventRegister() {
 
 }
 
-function submitLoginForm() {
-    let searchForm = document.getElementById("search-form");
+function submitRegisterForm() {
+    let searchForm = document.getElementById("register-form");
     let formData = new FormData(searchForm);
     const plainFormData = Object.fromEntries(formData.entries());
     const formDataJsonString = JSON.stringify(plainFormData);
     console.log("formDataJsonString:", formDataJsonString);
-    const uploadRequest = new Request(`${BE_SERVER_PORT}/houses`, {
+    const uploadRequest = new Request(`${BE_SERVER_PORT}/users/signup`, {
         method: "POST",
         headers: {"Content-Type": "application/json",
             'Authorization':  'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
@@ -90,8 +104,8 @@ function submitLoginForm() {
             console.log("received data:", data);
             if (data.success) {
                 document.getElementById("notification").innerHTML = `
-                    <div class="alert alert-success alert-dismissible fade show notification" role="alert" id="success-register"
-                         hidden="">
+                    <div class="alert alert-success alert-dismissible show notification" role="alert" id="success-register"
+                         >
                         <i class="fa fa-exclamation-circle me-2"></i>Song is successfully create, check here <a href="/songs/your-songs">Your Songs</a>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -104,7 +118,7 @@ function submitLoginForm() {
             } else {
                 // alert("Register unsuccessfully");
                 document.getElementById("notification").innerHTML = `
-                        <div class="alert alert-primary alert-dismissible fade show notification" role="alert" id="failed-register" hidden="">
+                        <div class="alert alert-primary alert-dismissible show notification" role="alert" id="failed-register" >
                             <i class="fa fa-exclamation-circle me-2"></i>Song creation unsuccessfully
                             <button type="button" class="btn-close" aria-label="Close" onclick="$('#failed-register').alert('close')"></button>
                         </div>

@@ -29,3 +29,6 @@ let house9 = new House(user2, available, 1200000, 900, phuong9);
 
 let houseList = [house1, house2, house3, house4, house5, house6, house7, house8, house9]
 
+function showAddress(house) {
+    return house.phuong.name +", " + house.phuong.quan.name +", " + house.phuong.quan.thanhPho.name
+}

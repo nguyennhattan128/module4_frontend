@@ -1,212 +1,187 @@
-let urlList, city, quan, phuong
-function onloadHouseCreate() {
 
-    addHTMLHouseCreate();
-    elementBindingHouseCreate();
-    getCity()
-    addEventHouseCreate();
+async function onloadHouseDetails() {
+
+    await addHTMLHouseDetails();
+    elementBindingHouseDetail();
+    addEventHouseDetails();
 }
 
-function addHTMLHouseCreate() {
+async function addHTMLHouseDetails() {
     // console.log(`URL changed to ${window.location.pathname}`);
     let html = `
 <div class="all-title-box">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 id="page-name">Host</h2>
+                <h2>Gallery</h2>
                 <!-- Breadcrumbs -->
-                <nav id="breadcrumbs">
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li>Host</li>
-                    </ul>
+                    <nav id="breadcrumbs">
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li>Gallery</li>    
+                       </ul>   
                 </nav>
             </div>
         </div>
     </div>
 </div>
-<div id="features" class="section wb">
-    <div class="container" style="min-width: 1600px">
-        <div class="section-title text-center">
-            <h3>Become a host!</h3>
-            <p class="lead">
-                Let us give you more details about the special offer website you want us. Please fill out the form
-                below.
-                <br>We have million of website owners who happy to work with us!</p>
-        </div><!-- end title -->
 
-        <div class="row">
-            <div class="col-md-5">
-                <div class="contact_form">
-                    <div id="message"></div>
-                    <form id="upload-form" class="row" action="" name="contactform" method="post">
-                        <fieldset class="row-fluid">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <input type="text" name="name" id="name" class="form-control"
-                                       placeholder="Your Home Name">
-                            </div>
-                        </fieldset>
-                        <fieldset class="row-fluid">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="input-group">
-
-                                    <input type="number" name="price" id="price" class="form-control"
-                                           placeholder="Monthly Fee" style="margin-bottom: 0">
-                                    <span class="input-group-addon">x 1.000VNĐ</span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="input-group">
-                                    <input type="number" name="area" id="area" class="form-control" placeholder="Area"
-                                           style="margin-bottom: 0">
-                                    <span class="input-group-addon">m<sup>2</sup></span>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset class="row-fluid" style="margin-top: 30px">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <select class="form-control" id="city" onchange="getQuanOptions()">
-                                    <option disabled selected>Chọn thành phố</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <select class="form-control" id="quan" disabled onchange="getPhuongOptions()">
-                                    <option disabled selected>Chọn quận/huyện</option>
-                                </select>
-                            </div>
-                        </fieldset>
-                        <fieldset class="row-fluid">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <select class="form-control" id="phuong" name="phuongId" disabled>
-                                    <option disabled selected>Chọn phường/xã</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <input type="hidden" name="imageURLList" id="image-url-list" value="[]">
-                                    <label for="exampleInputFile">Picture upload</label>
-                                    <input type="file" id="image-upload" onchange="uploadImage(event)"
-                                    <p class="help-block">Add some nice pictures of your home</p>
-                                </div>
-                            </div>
-
-                        </fieldset>
-                        <fieldset class="row-fluid">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="progress" style="height: 20px">
-                                    <div id="upload-progress"
-                                         class="progress-bar progress-bar-striped progress-bar-animated"
-                                         role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                                         style="width: 0; min-width: 2em;" hidden="">0%
+    <div id="gallery" class="section wb">        
+        <div class="container" style="min-width: 90%">
+            
+                <div class="row">
+                    <div class="col-md-8">
+                        <div id="da-thumbs" class="da-thumbs portfolio">
+                            <div class="post-media_g pitem item-w1 item-h1 cat1">
+                                <a href="uploads/home_01.jpg" data-rel="prettyPhoto[gal]" onclick="prettyPhoto">
+                                    <img src="uploads/home_01.jpg" alt="" class="img-responsive">
+                                    <div>
+                                        <i class="flaticon-unlink"></i>
                                     </div>
-                                </div>
+                                </a>
                             </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <textarea class="form-control" name="description" id="description" rows="10"
-                                              placeholder="Description for your home "></textarea>
+                            <div class="post-media_g pitem item-w1 item-h1 cat2">
+                                <a href="/uploads/home_02.jpg" data-rel="prettyPhoto[gal]">
+                                    <img src="/uploads/home_02.jpg" alt="" class="img-responsive">
+                                    <div>
+                                        <i class="flaticon-unlink"></i>
+                                    </div>
+                                </a>
                             </div>
-                        </fieldset>
-                        <fieldset class="row-fluid">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
-                                <button type="button" value="SEND" id="submit" onclick="submitForm()"
-                                        class="btn btn-light btn-radius btn-brd grd1 btn-block">Finish
-                                </button>
+                            <div class="post-media_g pitem item-w1 item-h1 cat1">
+                                <a href="/uploads/home_03.jpg" data-rel="prettyPhoto[gal]">
+                                    <img src="/uploads/home_03.jpg" alt="" class="img-responsive">
+                                    <div>
+                                        <i class="flaticon-unlink"></i>
+                                    </div>
+                                </a>
                             </div>
-                        </fieldset>
-                    </form>
-                </div>
-            </div><!-- end col -->
-            <div class="col-md-7">
-                <div class="right-box-contact">
-                    <h4>Image</h4>
-                    <div class="support-info" style="padding: 20px 40px">
-                        <div class="info-title">
-                            <fieldset class="row-fluid" id="image-box">
+            
+                            <div class="post-media_g pitem item-w1 item-h1 cat3">
+                                <a href="/uploads/home_04.jpg" data-rel="prettyPhoto[gal]">
+                                    <img src="/uploads/home_04.jpg" alt="" class="img-responsive">
+                                    <div>
+                                        <i class="flaticon-unlink"></i>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="post-media_g pitem item-w1 item-h1 cat2">
+                                <a href="/uploads/home_05.jpg" data-rel="prettyPhoto[gal]">
+                                    <img src="/uploads/home_05.jpg" alt="" class="img-responsive">
+                                    <div>
+                                        <i class="flaticon-unlink"></i>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="post-media_g pitem item-w1 item-h1 cat1">
+                                <a href="/uploads/home_06.jpg" data-rel="prettyPhoto[gal]">
+                                    <img src="/uploads/home_06.jpg" alt="" class="img-responsive">
+                                    <div>
+                                        <i class="flaticon-unlink"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div><!-- end portfolio -->
+                    </div>
+                    <div class="col-md-4">
+                        <div class="right-content">
+                            <h1 class="product-heading" style="font-size: 42px">$house.name}</h1>
+                            
+                            <h2 class="product-tagline">house.user.name}</h2>
 
+                            <dl class="dl-horizontal">
+                              <dt>Diện tích</dt>
+                              <dd>house.area m<sup>2</sup></dd>
+                            </dl>
+                            <h3>Diện tích: house.area m<sup>2</sup></h3>
+
+                            <h3>Giá thuê: house.price .000 VNĐ/tháng</h3>
+
+                            <h3 class="product-desc">
+                                house.description
+                            </h3>
+                            <form id="booking-form">
+                            <input id="house-id" name="houseId" value="{house.id}" hidden="">
+                                <fieldset class="row-fluid">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Từ tháng </span>
+                                            <input type="month" name="startMonth" id="start" class="form-control"
+                                                   style="margin-bottom: 0">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">đến tháng </span>
+                                            <input type="month" name="endMonth" id="end" class="form-control"
+                                                   style="margin-bottom: 0">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                            <fieldset class="row-fluid " style="margin-top: 15px">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center">
+                                    <button class="btn btn-danger" onclick="submitBookingForm()" style="font-size: 25px">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-plus" viewBox="0 0 16 16">
+                                          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
+                                          <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4zM8 8a.5.5 0 0 1 .5.5V10H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V11H6a.5.5 0 0 1 0-1h1.5V8.5A.5.5 0 0 1 8 8z"/>
+                                        </svg>
+                                        Book Now!
+                                    </button>
+                                </div>
+                            </fieldset>
+                            <fieldset class="row-fluid " style="margin-top: 15px">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center" >
+                                    <button class="btn btn-danger" style="font-size: 20px">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-text" viewBox="0 0 16 16">
+                                          <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z"/>
+                                          <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8zm0 2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
+                                        </svg>
+                                        Message Host
+                                    </button>
+                                </div>
                             </fieldset>
                         </div>
                     </div>
                 </div>
-            </div><!-- end col -->
-        </div><!-- end row -->
-    </div><!-- end container -->
-</div>
+        </div><!-- end container -->
+    </div><!-- end section -->
+
 `
     document.getElementById("page-content").innerHTML = html;
+    await loadScript("/js/portfolio.js")
+    await loadScript("/js/hoverdir.js")
+    // loadScript("/js/jquery.prettyPhoto.js")
 
-
+//     document.body.innerHTML += `
+//     <script type="text/javascript" charset="utf-8">
+//     $(document).ready(function(){
+//         $("a[data-rel^='prettyPhoto[gal]']").prettyPhoto();
+//     });
+// </script>
+//
+//     `
+    $("a[data-rel^='prettyPhoto[gal]']").prettyPhoto();
 
 }
 
 
-function elementBindingHouseCreate() {
-    urlList = document.getElementById("image-url-list");
-    city = document.getElementById("city");
-    quan = document.getElementById("quan");
-    phuong = document.getElementById("phuong");
-}
-
-function addEventHouseCreate() {
+function elementBindingHouseDetail() {
 
 }
 
-function removeImage(imageIndex) {
-    let urlArr = JSON.parse(urlList.value);
-    urlArr[imageIndex] = ""
-    urlList.value = JSON.stringify(urlArr);
-    console.log(urlList.value)
-    document.getElementById(`image-${imageIndex}`).remove();
+function addEventHouseDetails() {
+
 }
 
-function getCity() {
-    console.log(cityList);
-    cityList.forEach(item => {
-        city.innerHTML += `
-            <option value="${item.id}">${item.name}</option>
-        `
-    })
-}
-
-function getQuanOptions() {
-    if (city.value > 0) {
-        let quanArr = getQuan(parseInt(city.value))
-        console.log(quanArr)
-        quan.innerHTML = "<option disabled selected>Chọn quận/huyện</option>";
-        quan.removeAttribute("disabled");
-        quanArr.forEach(item => {
-            quan.innerHTML += `
-                <option value="${item.id}">${item.name}</option>
-            `
-        })
-        console.log(quan)
-    }
-}
-
-function getPhuongOptions() {
-    if (quan.value > 0) {
-        let phuongArr = getPhuong(parseInt(city.value))
-        console.log(phuongArr)
-        phuong.innerHTML = "<option disabled selected>Chọn quận/huyện</option>";
-        phuong.removeAttribute("disabled");
-        phuongArr.forEach(item => {
-            phuong.innerHTML += `
-                <option value="${item.id}">${item.name}</option>
-            `
-        })
-        console.log(phuong)
-    }
-}
-
-function submitForm(e) {
-    let uploadForm = document.getElementById("upload-form");
+function submitBookingForm(e) {
+    let uploadForm = document.getElementById("booking-form");
     let formData = new FormData(uploadForm);
-    formData.append("jwt", getCookie("jwt"));
     const plainFormData = Object.fromEntries(formData.entries());
     console.log(plainFormData)
     const formDataJsonString = JSON.stringify(plainFormData);
     console.log("formDataJsonString:", formDataJsonString);
-    const uploadRequest = new Request(`${BE_SERVER_PORT}/houses`, {
+    const uploadRequest = new Request(`${BE_SERVER_PORT}/contracts`, {
         method: "POST",
         headers: {"Content-Type": "application/json",
             'Authorization':  'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
@@ -245,5 +220,17 @@ function submitForm(e) {
             }
 
         })
-        .catch(console.error);
+        .catch(error => {
+            console.log (error);
+            document.getElementById("notification").innerHTML = `
+                        <div class="alert alert-success alert-dismissible show notification" role="alert" id="success-register"
+         hidden="">
+        <i class="fa fa-exclamation-circle me-2"></i>Song is successfully create, check here <a href="/songs/your-songs">Your Songs</a>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+                    `;
+            document.getElementById("success-register").removeAttribute("hidden");
+            console.log(document.getElementById("notification").innerHTML)
+            // $('#success-register').alert();
+        });
 }

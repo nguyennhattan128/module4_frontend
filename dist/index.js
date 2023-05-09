@@ -5,6 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
+const hostname = '127.0.0.1';
+const port = 3000;
 app.set('views', './src/view');
 app.set('view engine', 'ejs');
 app.use(express_1.default.static('./public'));
@@ -17,7 +19,7 @@ app.get('/login', (req, res, next) => {
 app.get('/register', (req, res, next) => {
     res.render('user/register.ejs');
 });
-app.listen(3000, () => {
-    console.log('Server is running');
+app.listen(port, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
 });
 //# sourceMappingURL=index.js.map
