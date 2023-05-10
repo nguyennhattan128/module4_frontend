@@ -127,6 +127,15 @@ async function addHTMLHouses() {
                                 </button>
                             </fieldset>
                         </div>
+                        <div class="col-md-12 text-center">
+                            <fieldset class="row-fluid" style="margin-top: 15px">
+                                <button type="reset" class="btn btn-success" id="search-button"
+                                >
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                    Reset search form
+                                </button>
+                            </fieldset>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -199,7 +208,9 @@ async function fetchAllHouses () {
                                 </figure>
                                 <div class="item-body">
                                     <h3 style="text-overflow: ellipsis; overflow: hidden "><a href="#" onclick="onloadHouseDetails(${item.id})">${item.brief}</a></h3>
-                                    
+                                    <h4>
+                                        <span>Price: <span class="estate-x-size">${item.price}</span> <span class="estate-x-unit">VNĐ/tháng</span></span>
+                                    </h4>
                                     <div class="adderess" style="text-overflow: ellipsis; overflow: hidden; height: 40px">
                                         <i class="fa fa-map-pin" aria-hidden="true"></i>
                                         ${item.phuong.name +", " + item.quan.name +", " + item.city.name}
@@ -227,16 +238,17 @@ async function fetchAllHouses () {
 function submitSearchForm(e) {
     let searchForm = document.getElementById("search-form");
     let formData = new FormData(searchForm);
-    const plainFormData = Object.fromEntries(formData.entries());
-    const formDataJsonString = JSON.stringify(plainFormData);
-    console.log("formDataJsonString:", formDataJsonString);
+    const data = [...formData.entries()];
+    const asString = data
+        .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+        .join('&');
+    console.log("formDatatoQS:", asString);
 
-    const uploadRequest = new Request(`${BE_SERVER_PORT}/houses`, {
-        method: "POST",
+    const uploadRequest = new Request(`${BE_SERVER_PORT}/houses/search?${asString}`, {
+        method: "GET",
         headers: {"Content-Type": "application/json",
             'Authorization':  'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
         },
-        body: formDataJsonString,
         credentials: "include"
     });
 
@@ -246,7 +258,8 @@ function submitSearchForm(e) {
         .then((data) => {
             console.log("received data:", data);
             if (data.success) {
-                data.forEach((item, index) => {
+                list.innerHTML = "";
+                data.data.forEach((item, index) => {
                     console.log(index, item)
                     list.innerHTML +=
                         `<div class="col-md-4 col-sm-6 col-xs-12" style="margin-bottom: 10px">
@@ -266,12 +279,9 @@ function submitSearchForm(e) {
                                 </figure>
                                 <div class="item-body">
                                     <h3 style="text-overflow: ellipsis; overflow: hidden "><a href="#" onclick="onloadHouseDetails(${item.id})">${item.brief}</a></h3>
-                                    <div class="info">
                                     <h4>
                                         <span>Price: <span class="estate-x-size">${item.price}</span> <span class="estate-x-unit">VNĐ/tháng</span></span>
                                     </h4>
-                                        <p style="text-overflow: ellipsis; overflow: hidden; height: 40px">${item.description}</p>
-                                    </div>
                                     <div class="adderess" style="text-overflow: ellipsis; overflow: hidden; height: 40px">
                                         <i class="fa fa-map-pin" aria-hidden="true"></i>
                                         ${item.phuong.name +", " + item.quan.name +", " + item.city.name}
@@ -286,26 +296,18 @@ function submitSearchForm(e) {
                                     </span>
                                 </div>
                                 <div class="pull-right">
-                                    <span class="prop-date">
-                                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                                    9 months ago
-                                    </span>
+                                    <button type="button" onclick="onloadHouseEdit(${item.id})"
+                                        class="btn btn-light btn-radius btn-brd grd1 btn-block">Edit
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div><!-- end service -->
                 </div>`
+                    $("a[data-rel^='prettyPhoto[gal]']").prettyPhoto();
                 })
             } else {
-                // alert("Register unsuccessfully");
-                document.getElementById("notification").innerHTML = `
-                        <div class="alert alert-primary alert-dismissible fade show notification" role="alert" id="failed-register" hidden="">
-                            <i class="fa fa-exclamation-circle me-2"></i>Search failed, try again
-                            <button type="button" class="btn-close" aria-label="Close" onclick="$('#failed-register').alert('close')"></button>
-                        </div>
-                    `;
-                document.getElementById("failed-register").removeAttribute("hidden");
-                $('#failed-register').alert();
+                alert("Search unsuccessfully");
             }
 
         })
