@@ -1,7 +1,7 @@
 .notification {
     position: absolute;
-    left: 50%;
-    top: 9%;
+    left: 50vw;
+    top: 9vh;
     transform: translateX(-50%);
     z-index: 999;
 }

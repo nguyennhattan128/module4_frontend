@@ -28,7 +28,7 @@ function addHTMLHouseCreate() {
 </div>
 <div id="features" class="section wb">
     <div class="container" style="min-width: 1600px">
-        <div class="section-title text-center">
+        <div class="section-title text-center" id="create-title">
             <h3>Become a host!</h3>
             <p class="lead">
                 Let us give you more details about the special offer website you want us. Please fill out the form
@@ -71,7 +71,7 @@ function addHTMLHouseCreate() {
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <select class="form-control" id="quan" disabled onchange="getPhuongOptions()">
+                                <select class="form-control" id="quan" disabled onchange="fetchPhuongOptions()">
                                     <option disabled selected>Chọn quận/huyện</option>
                                 </select>
                             </div>
@@ -153,9 +153,11 @@ function addEventHouseCreate() {
 
 function removeImage(imageIndex) {
     let urlArr = JSON.parse(urlList.value);
-    urlArr[imageIndex] = ""
+    // urlArr[imageIndex] = ""
+    urlArr = urlArr.filter(item => item != imageIndex)
+    // console.log("urlArr", urlArr)
     urlList.value = JSON.stringify(urlArr);
-    console.log(urlList.value)
+    // console.log(urlList.value)
     document.getElementById(`image-${imageIndex}`).remove();
 }
 
@@ -166,7 +168,7 @@ async function fetchCity() {
     if (cityList.success === false) {
         return false
     }
-    cityList.forEach(item => {
+    cityList.data.forEach(item => {
         city.innerHTML += `
             <option value="${item.id}">${item.name}</option>
         `
@@ -183,7 +185,7 @@ async function fetchQuanOptions() {
         }
         quan.innerHTML = "<option disabled selected>Chọn quận/huyện</option>";
         quan.removeAttribute("disabled");
-        quanList.forEach(item => {
+        quanList.data.forEach(item => {
             quan.innerHTML += `
                 <option value="${item.id}">${item.name}</option>
         `
@@ -202,7 +204,7 @@ async function fetchQuanOptions() {
     }
 }
 
-async function getPhuongOptions() {
+async function fetchPhuongOptions() {
     if (quan.value > 0) {
         console.log("current quan:", quan.value, quan.innerHTML)
 
@@ -225,7 +227,7 @@ async function getPhuongOptions() {
         }
         phuong.innerHTML = "<option disabled selected>Chọn phường/xã</option>";
         phuong.removeAttribute("disabled");
-        phuongList.forEach(item => {
+        phuongList.data.forEach(item => {
             phuong.innerHTML += `
                 <option value="${item.id}">${item.name}</option>
         `

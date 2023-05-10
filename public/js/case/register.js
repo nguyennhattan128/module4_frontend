@@ -45,7 +45,7 @@ async function addHTMLRegister() {
                                 <input type="text" name="username" id="username" class="form-control" placeholder="Username to login">
                             </div>
                             <div >
-                                <input type="text" name="password" id="password" class="form-control" placeholder="Password">
+                                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                             </div>                            
                             <div>
                                 <label class="sr-only">Select role</label>

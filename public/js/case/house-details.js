@@ -1,24 +1,24 @@
+async function onloadHouseDetails(id) {
 
-async function onloadHouseDetails() {
-
-    await addHTMLHouseDetails();
+    await addHTMLHouseDetails(id);
     elementBindingHouseDetail();
     addEventHouseDetails();
 }
 
-async function addHTMLHouseDetails() {
+async function addHTMLHouseDetails(id) {
+    let house = await fetchHouseDetail(id);
     // console.log(`URL changed to ${window.location.pathname}`);
     let html = `
 <div class="all-title-box">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2>Gallery</h2>
+                <h2>House Details</h2>
                 <!-- Breadcrumbs -->
                     <nav id="breadcrumbs">
                         <ul>
                             <li><a href="#">Home</a></li>
-                            <li>Gallery</li>    
+                            <li>Details</li>    
                        </ul>   
                 </nav>
             </div>
@@ -32,76 +32,46 @@ async function addHTMLHouseDetails() {
                 <div class="row">
                     <div class="col-md-8">
                         <div id="da-thumbs" class="da-thumbs portfolio">
-                            <div class="post-media_g pitem item-w1 item-h1 cat1">
-                                <a href="uploads/home_01.jpg" data-rel="prettyPhoto[gal]" onclick="prettyPhoto">
-                                    <img src="uploads/home_01.jpg" alt="" class="img-responsive">
-                                    <div>
-                                        <i class="flaticon-unlink"></i>
-                                    </div>
-                                </a>
-                            </div>
+`
+
+    house.image.forEach((item, index) => {
+        console.log(index, item)
+        html +=
+            `                            
                             <div class="post-media_g pitem item-w1 item-h1 cat2">
-                                <a href="/uploads/home_02.jpg" data-rel="prettyPhoto[gal]">
-                                    <img src="/uploads/home_02.jpg" alt="" class="img-responsive">
+                                <a href="${item.imageURL}" data-rel="prettyPhoto[gal]">
+                                    <img src="${item.imageURL}" alt="" class="img-responsive">
                                     <div>
                                         <i class="flaticon-unlink"></i>
                                     </div>
                                 </a>
                             </div>
-                            <div class="post-media_g pitem item-w1 item-h1 cat1">
-                                <a href="/uploads/home_03.jpg" data-rel="prettyPhoto[gal]">
-                                    <img src="/uploads/home_03.jpg" alt="" class="img-responsive">
-                                    <div>
-                                        <i class="flaticon-unlink"></i>
-                                    </div>
-                                </a>
-                            </div>
-            
-                            <div class="post-media_g pitem item-w1 item-h1 cat3">
-                                <a href="/uploads/home_04.jpg" data-rel="prettyPhoto[gal]">
-                                    <img src="/uploads/home_04.jpg" alt="" class="img-responsive">
-                                    <div>
-                                        <i class="flaticon-unlink"></i>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="post-media_g pitem item-w1 item-h1 cat2">
-                                <a href="/uploads/home_05.jpg" data-rel="prettyPhoto[gal]">
-                                    <img src="/uploads/home_05.jpg" alt="" class="img-responsive">
-                                    <div>
-                                        <i class="flaticon-unlink"></i>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="post-media_g pitem item-w1 item-h1 cat1">
-                                <a href="/uploads/home_06.jpg" data-rel="prettyPhoto[gal]">
-                                    <img src="/uploads/home_06.jpg" alt="" class="img-responsive">
-                                    <div>
-                                        <i class="flaticon-unlink"></i>
-                                    </div>
-                                </a>
-                            </div>
+
+`
+    })
+
+    html +=
+        `
                         </div><!-- end portfolio -->
                     </div>
                     <div class="col-md-4">
                         <div class="right-content">
-                            <h1 class="product-heading" style="font-size: 42px">$house.name}</h1>
+                            <h1 class="product-heading" style="font-size: 42px">${house.brief}</h1>
                             
-                            <h2 class="product-tagline">house.user.name}</h2>
+                            <span class="prop-user-agent">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    ${house.user.name}
+                                    </span>
 
-                            <dl class="dl-horizontal">
-                              <dt>Diện tích</dt>
-                              <dd>house.area m<sup>2</sup></dd>
-                            </dl>
-                            <h3>Diện tích: house.area m<sup>2</sup></h3>
+                            <h3>Diện tích: <b>${house.area}</b> m<sup>2</sup></h3>
 
-                            <h3>Giá thuê: house.price .000 VNĐ/tháng</h3>
+                            <h3>Giá thuê: <b>${house.price}</b> VNĐ/tháng</h3>
 
                             <h3 class="product-desc">
-                                house.description
+                                ${house.description}
                             </h3>
                             <form id="booking-form">
-                            <input id="house-id" name="houseId" value="{house.id}" hidden="">
+                            <input id="house-id" name="houseId" value="${house.id}" hidden="">
                                 <fieldset class="row-fluid">
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <div class="input-group">
@@ -153,6 +123,7 @@ async function addHTMLHouseDetails() {
     await loadScript("/js/hoverdir.js")
     // loadScript("/js/jquery.prettyPhoto.js")
 
+
 //     document.body.innerHTML += `
 //     <script type="text/javascript" charset="utf-8">
 //     $(document).ready(function(){
@@ -174,7 +145,20 @@ function addEventHouseDetails() {
 
 }
 
-function submitBookingForm(e) {
+async function fetchHouseDetail(id) {
+    let list = document.getElementById("da-thumbs");
+    const response = await fetch(`${BE_SERVER_PORT}/houses/${id}`, defaultFetchOpts);
+    const data = await response.json();
+    console.log("data:", data);
+    if (data.success === false) {
+        return false
+    }
+    return data.data
+
+}
+
+
+function submitBookingForm() {
     let uploadForm = document.getElementById("booking-form");
     let formData = new FormData(uploadForm);
     const plainFormData = Object.fromEntries(formData.entries());
@@ -183,8 +167,9 @@ function submitBookingForm(e) {
     console.log("formDataJsonString:", formDataJsonString);
     const uploadRequest = new Request(`${BE_SERVER_PORT}/contracts`, {
         method: "POST",
-        headers: {"Content-Type": "application/json",
-            'Authorization':  'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
         },
         body: formDataJsonString,
         credentials: "include"
@@ -221,7 +206,7 @@ function submitBookingForm(e) {
 
         })
         .catch(error => {
-            console.log (error);
+            console.log(error);
             document.getElementById("notification").innerHTML = `
                         <div class="alert alert-success alert-dismissible show notification" role="alert" id="success-register"
          hidden="">

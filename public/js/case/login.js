@@ -36,7 +36,7 @@ async function addHTMLLogin() {
                                 <input type="text" name="username" id="username" class="form-control" placeholder="Username to login">
                             </div>
                             <div >
-                                <input type="text" name="password" id="password" class="form-control" placeholder="Password">
+                                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                             </div>   
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
                                 <button type="button" class="btn btn-light btn-radius btn-brd grd1 btn-block" onclick="submitLoginForm()">Login</button>
@@ -90,7 +90,7 @@ function submitLoginForm() {
                 document.getElementById("notification").innerHTML = `
                     <div class="alert alert-info alert-dismissible show notification" role="alert" id="success-register"
                          >
-                        <i class="fa fa-exclamation-circle me-2"></i>Song is successfully create, check here <a href="/songs/your-songs">Your Songs</a>
+                        <i class="fa fa-exclamation-circle me-2"></i>Login failed <a href="/songs/your-songs">Your Songs</a>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     `;
@@ -103,7 +103,7 @@ function submitLoginForm() {
                 // alert("Register unsuccessfully");
                 document.getElementById("notification").innerHTML = `
                         <div class="alert alert-primary alert-dismissible show notification" role="alert" id="failed-register" >
-                            <i class="fa fa-exclamation-circle me-2"></i>Song creation unsuccessfully
+                            <i class="fa fa-exclamation-circle me-2"></i>Login success
                             <button type="button" class="btn-close" aria-label="Close" onclick="$('#failed-register').alert('close')"></button>
                         </div>
                     `;
@@ -111,9 +111,49 @@ function submitLoginForm() {
                 $('#failed-register').alert();
 
                 localStorage.setItem('ACCESS_TOKEN', data);
+                console.log(localStorage)
+                const user = parseJwt(data)
+                console.log("parsed Jwt:", user)
+                localStorage.setItem('role', user.role);
+                document.getElementById("login-logout").innerHTML = `
+                <a href="#" onclick="logout()">Logout</a>
+                `;
+
                 onloadHouses();
             }
 
         })
         .catch(console.error);
+}
+
+function logout() {
+    localStorage.removeItem('ACCESS_TOKEN');
+    localStorage.removeItem('role');
+    console.log(localStorage)
+    document.getElementById("login-logout").innerHTML = `
+                <a href="#" onclick="onloadLogin()">Login</a>
+                `;
+}
+
+// decode the logged in user
+function parseJwt(token) {
+    if (!token) {
+        return;
+    }
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace("-", "+").replace("_", "/");
+    return JSON.parse(window.atob(base64));
+}
+
+// loggedin user
+function addLoggingButtonHtml() {
+    if (localStorage.getItem('ACCESS_TOKEN')) {
+        document.getElementById("login-logout").innerHTML = `
+                <a href="#" onclick="logout()">Logout</a>
+                `;
+    } else {
+        document.getElementById("login-logout").innerHTML = `
+                <a href="#" onclick="onloadLogin()">Login</a>
+                `;
+    }
 }
