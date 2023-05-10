@@ -6,7 +6,43 @@
 <!-- ALL PLUGINS -->
 <script src="/js/custom.js"></script>
 
+<script>
+    function pushNewIMG(downloadURL) {
+        let urlList = document.getElementById("image-url-list").value;
+        urlList = JSON.parse(urlList);
+        urlList.push(downloadURL);
+        document.getElementById("image-url-list").value = JSON.stringify(urlList);
+        console.log(document.getElementById("image-url-list").value)
 
+        let imageShowDiv = `
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="image-${downloadURL}"
+                    style="border: 1px solid lightgray; border-radius: 5px; background-color: white">
+                        <div class="col-lg-8" style="height: 220px; position: relative;">
+
+                          <img src="${downloadURL}"  alt="" class="" style="position: absolute;
+                                  top: 50%;
+                                  -ms-transform: translateY(-50%);
+                                  transform: translateY(-50%);
+                                  width: 250px;
+                                    height: 200px;
+                                    object-fit: cover;
+">
+
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-2" style="height: 200px; position: relative">
+                                <button class="btn btn-danger " type="button" value="${downloadURL}" onclick="removeImage(this.value)"
+                                    style="position: absolute;
+                                      top: 50%;
+                                      -ms-transform: translateY(-50%);
+                                      transform: translateY(-50%);">Remove</button>
+
+                      </div>
+                    </div>
+                    `
+        document.getElementById("image-box").innerHTML += imageShowDiv
+    }
+</script>
 <script type="module">
     // Import the functions you need from the SDKs you need
     import {initializeApp} from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
@@ -93,52 +129,7 @@
                 // Upload completed successfully, now we can get the download URL
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     console.log('File available at', downloadURL);
-                    // alert("Upload complete");
-
-                    //                 document.getElementById("notification").innerHTML = `
-                    //                     <div class="alert alert-success alert-dismissible fade show notification" role="alert" id="success-register"
-                    //      hidden="">
-                    //     <i class="fa fa-exclamation-circle me-2"></i>Upload successfully!
-                    //     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    // </div>
-                    //                 `;
-                    //                 document.getElementById("success-register").removeAttribute("hidden");
-                    //                 $('#success-register').alert();
-
-                    let urlList = document.getElementById("image-url-list").value;
-                    urlList = JSON.parse(urlList);
-                    urlList.push(downloadURL);
-                    document.getElementById("image-url-list").value = JSON.stringify(urlList);
-                    console.log(document.getElementById("image-url-list").value)
-
-                    let imageShowDiv = `
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="image-${urlList.length - 1}"
-                    style="border: 1px solid lightgray; border-radius: 5px; background-color: white">
-                        <div class="col-lg-8" style="height: 220px; position: relative;">
-
-                          <img src="${downloadURL}"  alt="" class="" style="position: absolute;
-                                  top: 50%;
-                                  -ms-transform: translateY(-50%);
-                                  transform: translateY(-50%);
-                                  width: 250px;
-                                    height: 200px;
-                                    object-fit: cover;
-">
-
-                        </div>
-                        <div class="col-lg-1"></div>
-                        <div class="col-lg-2" style="height: 200px; position: relative">
-                                <button class="btn btn-danger " type="button" value="${urlList.length - 1}" onclick="removeImage(this.value)"
-                                    style="position: absolute;
-                                      top: 50%;
-                                      -ms-transform: translateY(-50%);
-                                      transform: translateY(-50%);">Remove</button>
-
-                      </div>
-                    </div>
-                    `
-                    document.getElementById("image-box").innerHTML += imageShowDiv
-
+                    pushNewIMG(downloadURL)
                     setTimeout(() => {
                         document.getElementById("image-upload").disabled = false;
                     }, 500)
@@ -147,6 +138,8 @@
             }
         );
     }
+
+
 
     window.uploadImage = uploadImage;
 </script>
@@ -160,6 +153,8 @@
 <script src="/js/case/house-details.js"></script>
 <script src="/js/case/login.js"></script>
 <script src="/js/case/register.js"></script>
+<script src="/js/case/house-edit.js"></script>
+<script src="/js/case/contracts.js"></script>
 
 
 
