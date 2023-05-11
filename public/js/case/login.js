@@ -76,8 +76,9 @@ function submitLoginForm() {
     console.log("formDataJsonString:", formDataJsonString);
     const uploadRequest = new Request(`${BE_SERVER_PORT}/users/login`, {
         method: "POST",
-        headers: {"Content-Type": "application/json",
-            'Authorization':  'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
         },
         body: formDataJsonString,
         credentials: "include"
@@ -115,9 +116,14 @@ function submitLoginForm() {
                 const user = parseJwt(data)
                 console.log("parsed Jwt:", user)
                 localStorage.setItem('role', user.role);
-                document.getElementById("login-logout").innerHTML = `
-                <a href="#" onclick="logout()">Logout</a>
-                `;
+                // if (user.role == 2) {
+                //     document.getElementById("host-but").style.display = null
+                // }
+                // document.getElementById("contract-but").style.display = null
+                // document.getElementById("login-logout").innerHTML = `
+                // <a href="#" onclick="logout()">Logout</a>
+                // `;
+                firstTimeCheck();
 
                 onloadHouses();
             }
@@ -130,20 +136,16 @@ function logout() {
     localStorage.removeItem('ACCESS_TOKEN');
     localStorage.removeItem('role');
     console.log(localStorage)
-    document.getElementById("login-logout").innerHTML = `
-                <a href="#" onclick="onloadLogin()">Login</a>
-                `;
+    // document.getElementById("login-logout").innerHTML = `
+    //             <a href="#" onclick="onloadLogin()">Login</a>
+    //             `;
+    // document.getElementById("host-but").style.display = "none"
+    // document.getElementById("contract-but").style.display = "none"
+    firstTimeCheck();
+    onloadHouses();
 }
 
 // decode the logged in user
-function parseJwt(token) {
-    if (!token) {
-        return;
-    }
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace("-", "+").replace("_", "/");
-    return JSON.parse(window.atob(base64));
-}
 
 // loggedin user
 function addLoggingButtonHtml() {

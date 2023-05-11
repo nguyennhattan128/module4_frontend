@@ -149,6 +149,9 @@ async function addHTMLHouses() {
 `
     document.getElementById("page-content").innerHTML = html;
 
+    removeActiveTopNav();
+    document.getElementById("house-nav").classList.add("active");
+
     if (localStorage.getItem('ACCESS_TOKEN')) {
         document.getElementById("login-logout").innerHTML = `
                 <a href="#" onclick="logout()">Logout</a>
@@ -182,7 +185,7 @@ let a = ``
 
 async function fetchAllHouses () {
     let list = document.getElementById("house-list");
-    const response = await fetch(`${BE_SERVER_PORT}/houses`, defaultFetchOpts);
+    const response = await fetch(`${BE_SERVER_PORT}/houses`, defaultFetchOpts());
     const houseList = await response.json();
     console.log(houseList);
     if (houseList.success === false) {
@@ -198,18 +201,19 @@ async function fetchAllHouses () {
                                 <figure class="post-media wow fadeIn"  >
                                     <a href="${item.image[0].imageURL}" data-rel="prettyPhoto[gal]"
                                        class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
-                                    <img src="${item.image[0].imageURL}" alt="" class="img-responsive" style="max-width: 30vw; aspect-ratio: 1/1; object-fit: cover">
+                                    <img src="${item.image[0].imageURL}" alt="" class="img-responsive" 
+                                    style="max-width: 30vw; aspect-ratio: 1/1; object-fit: cover">
                                     <div class="label-inner">
                                         <span class="label-status label">Popular</span>
                                     </div>
                                     <div class="price">
-                                        <span class="item-sub-price"> ${item.area} m<sup>2</sup></span>
+                                        <span class="item-sub-price" style="font-weight: bold"> ${item.area} m<sup>2</sup></span>
                                     </div>
                                 </figure>
                                 <div class="item-body">
                                     <h3 style="text-overflow: ellipsis; overflow: hidden "><a href="#" onclick="onloadHouseDetails(${item.id})">${item.brief}</a></h3>
                                     <h4>
-                                        <span>Price: <span class="estate-x-size">${item.price}</span> <span class="estate-x-unit">VNĐ/tháng</span></span>
+                                        <span>Price: <span class="estate-x-size" style="font-weight: bold">${item.price}</span> <span class="estate-x-unit">VNĐ/tháng</span></span>
                                     </h4>
                                     <div class="adderess" style="text-overflow: ellipsis; overflow: hidden; height: 40px">
                                         <i class="fa fa-map-pin" aria-hidden="true"></i>
@@ -225,9 +229,7 @@ async function fetchAllHouses () {
                                     </span>
                                 </div>
                                 <div class="pull-right">
-                                    <button type="button" onclick="onloadHouseEdit(${item.id})"
-                                        class="btn btn-light btn-radius btn-brd grd1 btn-block">Edit
-                                    </button>
+
                                 </div>
                             </div>
                         </div>

@@ -135,7 +135,8 @@ function addHTMLHouseCreate() {
 `
     document.getElementById("page-content").innerHTML = html;
 
-
+    removeActiveTopNav();
+    document.getElementById("host-nav").classList.add("active");
 
 }
 
@@ -162,7 +163,7 @@ function removeImage(imageIndex) {
 }
 
 async function fetchCity() {
-    const response = await fetch(`${BE_SERVER_PORT}/city`, defaultFetchOpts);
+    const response = await fetch(`${BE_SERVER_PORT}/city`, defaultFetchOpts());
     const cityList = await response.json();
     console.log(cityList);
     if (cityList.success === false) {
@@ -177,7 +178,7 @@ async function fetchCity() {
 
 async function fetchQuanOptions() {
     if (city.value > 0) {
-        const response = await fetch(`${BE_SERVER_PORT}/quan?city=${city.value}`, defaultFetchOpts);
+        const response = await fetch(`${BE_SERVER_PORT}/quan?city=${city.value}`, defaultFetchOpts());
         const quanList = await response.json();
         console.log(quanList);
         if (quanList.success === false) {
@@ -219,7 +220,7 @@ async function fetchPhuongOptions() {
         // })
         // console.log(phuong)
 
-        const response = await fetch(`${BE_SERVER_PORT}/phuong?quan=${quan.value}`, defaultFetchOpts);
+        const response = await fetch(`${BE_SERVER_PORT}/phuong?quan=${quan.value}`, defaultFetchOpts());
         const phuongList = await response.json();
         console.log(phuongList);
         if (phuongList.success === false) {

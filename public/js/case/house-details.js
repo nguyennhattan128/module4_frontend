@@ -40,7 +40,8 @@ async function addHTMLHouseDetails(id) {
             `                            
                             <div class="post-media_g pitem item-w1 item-h1 cat2">
                                 <a href="${item.imageURL}" data-rel="prettyPhoto[gal]">
-                                    <img src="${item.imageURL}" alt="" class="img-responsive">
+                                    <img src="${item.imageURL}" alt="" class="img-responsive"
+                                    style="width: 30vw; aspect-ratio: 3/2; object-fit: cover">
                                     <div>
                                         <i class="flaticon-unlink"></i>
                                     </div>
@@ -121,6 +122,7 @@ async function addHTMLHouseDetails(id) {
     document.getElementById("page-content").innerHTML = html;
     await loadScript("/js/portfolio.js")
     await loadScript("/js/hoverdir.js")
+    removeActiveTopNav();
     // loadScript("/js/jquery.prettyPhoto.js")
 
 
@@ -147,7 +149,7 @@ function addEventHouseDetails() {
 
 async function fetchHouseDetail(id) {
     let list = document.getElementById("da-thumbs");
-    const response = await fetch(`${BE_SERVER_PORT}/houses/${id}`, defaultFetchOpts);
+    const response = await fetch(`${BE_SERVER_PORT}/houses/${id}`, defaultFetchOpts());
     const data = await response.json();
     console.log("data:", data);
     if (data.success === false) {

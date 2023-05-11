@@ -1,3 +1,9 @@
+const status = {
+    1: "Active",
+    2: "Over",
+    3: "Paid",
+    4: "Canceled"
+}
 async function onloadContracts() {
     await addHTMLContracts();
     elementBindingContracts();
@@ -61,6 +67,9 @@ async function addHTMLContracts() {
 `
     document.getElementById("page-content").innerHTML = html;
 
+    removeActiveTopNav();
+    document.getElementById("contract-nav").classList.add("active");
+
     await fetchAllContracts();
 
     $("a[data-rel^='prettyPhoto[gal]']").prettyPhoto();
@@ -78,7 +87,7 @@ function addEventContracts() {
 
 async function fetchAllContracts () {
     let list = document.getElementById("contract-list");
-    const response = await fetch(`${BE_SERVER_PORT}/contracts`, defaultFetchOpts);
+    const response = await fetch(`${BE_SERVER_PORT}/contracts/yours`, defaultFetchOpts());
     const contractList = await response.json();
     console.log("contractList:", contractList);
     if (contractList.success === false) {
@@ -94,7 +103,8 @@ async function fetchAllContracts () {
                             <div class="property-wrap">
                                 <div class="container-fluid">
                                     <figure class="post-media wow fadeIn col-md-4 col-sm-6 col-xs-12" style="padding: 0">
-                                        <img src="uploads/estate_01.jpg" alt="" class="img-responsive">
+                                        <img src="${item.house.image[0].imageURL}" alt="" class="img-responsive"
+                                        style="max-width: 20vw; aspect-ratio: 3/2; object-fit: cover">
                                         <div class="label-inner">
                                             <span class="label-status label">Popular</span>
                                         </div>
@@ -120,12 +130,15 @@ async function fetchAllContracts () {
                                                   <dd>${item.cost} VNĐ</dd>
                                                 </dl>
                                             </div>
+                                            <h2 style="text-overflow: ellipsis; overflow: hidden; color: #2b542c; text-align: center; font-weight: bold ">
+                                            ${status[item.status.id]}</h2>
                                         </div>
                                     </div>
                                     <div class="col-md-2 col-sm-2 col-xs-2" style="align-items: end;min-height: 100%">
                                         <button type="button" onclick="cancelContract(${item.id})"
-                                            class="btn btn-danger btn-radius btn-brd grd1 btn-block">Cancel
-                                        </button>
+                                            class="btn btn-danger btn-radius btn-brd grd1 btn-block ${(item.status.id !== 3)? 'hidden': ''}"
+                                            >Cancel
+                                        </button>                                        
                                     </div>
                                 </div>
                             </div>
@@ -214,7 +227,8 @@ async function fetchAllContracts () {
 
 }
 function cancelContract(contractId) {
-    console.log("trying cancel contract with id:", contractId)
+    console.log("trying cancel contract with id:", contractId);
+    let position = document.documentElement.scrollTop
     const cancelRequest = new Request(`${BE_SERVER_PORT}/contracts/${contractId}`, {
         method: "DELETE",
         headers: {"Content-Type": "application/json",
@@ -225,10 +239,12 @@ function cancelContract(contractId) {
 
     fetch(cancelRequest)
         .then((response) => response.json())
-        .then((data) => {
+        .then(async (data) => {
             console.log("received data:", data);
             if (data.success) {
-                alert("Cancel Booking thanh cong!")
+                alert("Cancel Booking thanh cong!");
+                await onloadContracts();
+                document.documentElement.scrollTop = position;
             } else {
                 // alert("Register unsuccessfully");
                 document.getElementById("notification").innerHTML = `

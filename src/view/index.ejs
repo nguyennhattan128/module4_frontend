@@ -27,15 +27,15 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" onclick="onloadHouseDetails()">Gallery</a></li>
-                    <li><a class="active" href="#" onclick="onloadHouses()">Houses</a></li>
-                    <li><a class="active" href="#" onclick="onloadContracts()">Contract</a></li>
-                    <li><a href="#" onclick="onloadHouseCreate()">Host</a></li>
+                    <li><a class="top-bar active" id="house-nav" href="#" onclick="onloadHouses()">Houses</a></li>
+                    <li id="yours-but"><a class="top-bar" id="yours-nav" href="#" onclick="onloadYourHouses()">Your Houses</a></li>
+                    <li id="contract-but"><a class="top-bar " id="contract-nav" href="#" onclick="onloadContracts()">Contract</a></li>
+                    <li id="host-but"><a class="top-bar " id="host-nav" href="#" onclick="onloadHouseCreate()">Host</a></li>
                     <li id="login-logout"><a href="#" onclick="onloadLogin()">Login</a></li>
                     <li class="social-links"><a href="#"><i class="fa fa-twitter global-radius"></i></a></li>
                     <li class="social-links"><a href="#"><i class="fa fa-facebook global-radius"></i></a></li>
                     <li class="social-links"><a href="#"><i class="fa fa-linkedin global-radius"></i></a></li>
-                    <li class="search-option">
+                    <li class="search-option" style="display: none">
                         <button class="search tran3s dropdown-toggle" id="searchDropdown" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"><i class="fa fa-search"
                                                                               aria-hidden="true"></i></button>
